@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: offer-server
+  profiles:
+    active: local
+
+feign:
+  sentinel:
+    enabled: true

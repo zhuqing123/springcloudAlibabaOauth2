@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_cbvac" default="compile.module.cbvac">
+  <dirname property="module.cbvac.basedir" file="${ant.file.module_cbvac}"/>
+  
+  <property name="module.jdk.home.cbvac" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.cbvac" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.cbvac" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.cbvac" value="-encoding UTF-8 -source 8 -target 1.8 ${compiler.args}"/>
+  
+  <property name="cbvac.output.dir" value="${module.cbvac.basedir}/target/classes"/>
+  <property name="cbvac.testoutput.dir" value="${module.cbvac.basedir}/target/test-classes"/>
+  
+  <path id="cbvac.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="cbvac.module.production.classpath">
+    <path refid="${module.jdk.classpath.cbvac}"/>
+  </path>
+  
+  <path id="cbvac.runtime.production.module.classpath">
+    <pathelement location="${cbvac.output.dir}"/>
+  </path>
+  
+  <path id="cbvac.module.classpath">
+    <path refid="${module.jdk.classpath.cbvac}"/>
+    <pathelement location="${cbvac.output.dir}"/>
+  </path>
+  
+  <path id="cbvac.runtime.module.classpath">
+    <pathelement location="${cbvac.testoutput.dir}"/>
+    <pathelement location="${cbvac.output.dir}"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.cbvac">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.cbvac">
+    <patternset refid="excluded.from.module.cbvac"/>
+  </patternset>
+  
+  
+  <target name="compile.module.cbvac" depends="compile.module.cbvac.production,compile.module.cbvac.tests" description="Compile module cbvac"/>
+  
+  <target name="compile.module.cbvac.production" depends="register.custom.compilers" description="Compile module cbvac; production classes"/>
+  
+  <target name="compile.module.cbvac.tests" depends="register.custom.compilers,compile.module.cbvac.production" description="compile module cbvac; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.cbvac" description="cleanup module">
+    <delete dir="${cbvac.output.dir}"/>
+    <delete dir="${cbvac.testoutput.dir}"/>
+  </target>
+</project>

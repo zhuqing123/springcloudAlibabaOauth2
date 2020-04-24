@@ -1,0 +1,15 @@
+spring:
+  cloud:
+    sentinel:
+      transport:
+        port: 8719
+        dashboard: localhost:8081
+      eager: true
+    nacos:
+      discovery:
+        serverAddr: 127.0.0.1:8848
+server:
+  port: 8764
+feign:
+  sentinel:
+    enabled: true

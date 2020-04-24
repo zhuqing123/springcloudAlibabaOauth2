@@ -1,0 +1,93 @@
+spring:
+  cloud:
+    sentinel:
+      transport:
+        port: 8719
+        dashboard: localhost:8081
+      eager: true
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+  redis:
+    host: 192.168.10.253
+    port: 6379
+    jedis:
+      pool:
+        max-active: 8 #最大连接数
+        max-wait: -1ms #连接池最大阻塞时间
+        max-idle: 8 #连接池最大空闲连接
+        min-idle: 0 #连接池最小空闲连接
+    timeout: 30000 #连接超时时间
+    password: cbvac@123
+  datasource:
+    dynamic:
+      primary: master
+      druid:
+        initial-size: 5
+        min-idle: 5
+        max-active: 20
+        max-wait: 60000
+        time-between-eviction-runs-millis: 60000
+        min-evictable-idle-time-millis: 300000
+       # validation-query: SELECT 1 FROM DUAL
+        test-while-idle: true
+        test-on-borrow: false
+        test-on-return: false
+        pool-prepared-statements: true
+        max-pool-prepared-statement-per-connection-size: 20
+        filters: stat,wall
+       # connection-properties: druid.stat.mergeSql\=true;druid.stat.slowSqlMillis\=5000
+        web-stat-filter:
+          enabled: true
+          url-pattern: "/*"
+          exclusions: "*.js,*.gif,*.jpg,*.bmp,*.png,*.css,*.ico,/druid/*"
+        stat-view-servlet:
+          url-pattern: "/druid/*"
+          reset-enable=false: false
+      datasource:
+        master:
+          username: root
+          password: root
+          driver-class-name: com.mysql.cj.jdbc.Driver
+          url: jdbc:mysql://192.168.60.20:3306/cbvac_offer_server?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8
+        slave_1:
+          username: sa
+          password: cbv123456@
+          driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+          url: jdbc:sqlserver://192.168.10.77;DatabaseName=AIS20171227112619
+    druid:
+      stat-view-servlet:
+        login-username: admin
+        login-password: 123456
+  autoconfigure:
+    exclude: com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceAutoConfigure
+  main:
+    allow-bean-definition-overriding: true
+
+
+
+server:
+  port: 8763
+feign:
+  sentinel:
+    enabled: true
+security:
+  oauth2:
+    resource:
+      user-info-uri: http://localhost:8764/auth/server/user
+      prefer-token-info: false
+    client:
+      client-id: pos
+      client-secret: pos
+mybatis-plus:
+  mapper-locations: classpath:/mapper/**/*Mapper.xml # xml扫描，多个目录用逗号或者分号分隔（告诉 Mapper 所对应的 XML 文件位置）
+  type-aliases-package: com.cbvac.**.entity
+  global-config:
+    db-config:
+      id-type: id_worker  #主键类型 AUTO:"数据库ID自增" INPUT:"用户输入ID",ID_WORKER:"全局唯一ID (数字类型唯一ID)", UUID:"全局唯一ID UUID";
+      field-strategy: NOT_EMPTY #字段策略 IGNORED:"忽略判断"  NOT_NULL:"非 NULL 判断")  NOT_EMPTY:"非空判断"
+      db-type: MYSQL  #数据库类型
+  configuration:
+    map-underscore-to-camel-case: true # 是否开启自动驼峰命名规则映射:从数据库列名到Java属性驼峰命名的类似映射
+    call-setters-on-nulls: true  # 如果查询结果中包含空值的列，则 MyBatis 在映射的时候，不会映射这个字段
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl  # 这个配置会将执行的sql打印出来，在开发或测试的时候可以用

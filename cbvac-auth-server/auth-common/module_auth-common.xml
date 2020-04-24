@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_auth-common" default="compile.module.auth-common">
+  <dirname property="module.auth-common.basedir" file="${ant.file.module_auth-common}"/>
+  
+  <property name="module.jdk.home.auth-common" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.auth-common" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.auth-common" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.auth-common" value="-encoding UTF-8 -source 8 -target 1.8 ${compiler.args}"/>
+  
+  <property name="auth-common.output.dir" value="${module.auth-common.basedir}/target/classes"/>
+  <property name="auth-common.testoutput.dir" value="${module.auth-common.basedir}/target/test-classes"/>
+  
+  <path id="auth-common.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="auth-common.module.production.classpath">
+    <path refid="${module.jdk.classpath.auth-common}"/>
+  </path>
+  
+  <path id="auth-common.runtime.production.module.classpath">
+    <pathelement location="${auth-common.output.dir}"/>
+  </path>
+  
+  <path id="auth-common.module.classpath">
+    <path refid="${module.jdk.classpath.auth-common}"/>
+    <pathelement location="${auth-common.output.dir}"/>
+  </path>
+  
+  <path id="auth-common.runtime.module.classpath">
+    <pathelement location="${auth-common.testoutput.dir}"/>
+    <pathelement location="${auth-common.output.dir}"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.auth-common">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.auth-common">
+    <patternset refid="excluded.from.module.auth-common"/>
+  </patternset>
+  
+  <path id="auth-common.module.sourcepath">
+    <dirset dir="${module.auth-common.basedir}">
+      <include name="src/main/java"/>
+      <include name="src/main/resources"/>
+    </dirset>
+  </path>
+  
+  <path id="auth-common.module.test.sourcepath">
+    <dirset dir="${module.auth-common.basedir}">
+      <include name="src/test/java"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.auth-common" depends="compile.module.auth-common.production,compile.module.auth-common.tests" description="Compile module auth-common"/>
+  
+  <target name="compile.module.auth-common.production" depends="register.custom.compilers" description="Compile module auth-common; production classes">
+    <mkdir dir="${auth-common.output.dir}"/>
+    <javac2 destdir="${auth-common.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.auth-common}/javac">
+      <compilerarg line="${compiler.args.auth-common}"/>
+      <bootclasspath refid="auth-common.module.bootclasspath"/>
+      <classpath refid="auth-common.module.production.classpath"/>
+      <src refid="auth-common.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.auth-common"/>
+    </javac2>
+    
+    <copy todir="${auth-common.output.dir}">
+      <fileset dir="${module.auth-common.basedir}/src/main/java">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+      <fileset dir="${module.auth-common.basedir}/src/main/resources">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.auth-common.tests" depends="register.custom.compilers,compile.module.auth-common.production" description="compile module auth-common; test classes" unless="skip.tests">
+    <mkdir dir="${auth-common.testoutput.dir}"/>
+    <javac2 destdir="${auth-common.testoutput.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.auth-common}/javac">
+      <compilerarg line="${compiler.args.auth-common}"/>
+      <bootclasspath refid="auth-common.module.bootclasspath"/>
+      <classpath refid="auth-common.module.classpath"/>
+      <src refid="auth-common.module.test.sourcepath"/>
+      <patternset refid="excluded.from.compilation.auth-common"/>
+    </javac2>
+    
+    <copy todir="${auth-common.testoutput.dir}">
+      <fileset dir="${module.auth-common.basedir}/src/test/java">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="clean.module.auth-common" description="cleanup module">
+    <delete dir="${auth-common.output.dir}"/>
+    <delete dir="${auth-common.testoutput.dir}"/>
+  </target>
+</project>

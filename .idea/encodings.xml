@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/cbvac-auth-server/auth-common/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/cbvac-auth-server/auth-server/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/cbvac-common/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/cbvac-framework/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/cbvac-gateway/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/cbvac-offer-server/offer-common/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/cbvac-offer-server/offer-server/src/main/java" charset="UTF-8" />
+  </component>
+</project>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="cbvac-framework" />
+        <module name="cbvac-gateway" />
+        <module name="offer-server" />
+        <module name="cbvac-common" />
+        <module name="auth-common" />
+        <module name="auth-server" />
+        <module name="offer-common" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="auth-common" target="1.8" />
+      <module name="auth-server" target="1.8" />
+      <module name="cbvac" target="1.8" />
+      <module name="cbvac-auth-server" target="1.8" />
+      <module name="cbvac-common" target="1.8" />
+      <module name="cbvac-framework" target="1.8" />
+      <module name="cbvac-gateway" target="1.8" />
+      <module name="cbvac-offer-server" target="1.8" />
+      <module name="offer-common" target="1.8" />
+      <module name="offer-server" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="auth-common" options="-parameters" />
+      <module name="auth-server" options="-parameters" />
+      <module name="cbvac-common" options="-parameters" />
+      <module name="cbvac-framework" options="-parameters" />
+      <module name="cbvac-gateway" options="-parameters" />
+      <module name="cbvac-offer-server" options="-parameters" />
+      <module name="offer-common" options="-parameters" />
+      <module name="offer-server" options="-parameters" />
+    </option>
+  </component>
+</project>

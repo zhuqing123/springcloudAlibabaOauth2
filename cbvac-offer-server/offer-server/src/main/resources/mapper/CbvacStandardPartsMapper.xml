@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cbvac.mapper.CbvacStandardPartsMapper">
+
+    <sql id="standardPartsSql">
+                                select
+        a.id as id,
+        a.parts_name as parts_name,
+        a.specifications as specifications,
+        a.dict_unit_id as dict_unit_id,
+        b.dict_name as dict_unit_name,
+        a.price as price,
+        a.brand as brand,
+        a.type as type,
+        a.create_time as create_time,
+        a.modify_time as modify_time,
+        a.create_id as create_id,
+        a.modify_id as modify_id
+        from cbvac_standard_parts a
+        left join cbvac_dict b on a.dict_unit_id=b.id and b.del_flag=0
+    </sql>
+
+    <select id="selfSelectPage" resultType="com.cbvac.entity.CbvacStandardPartsEntity"
+            parameterType="com.cbvac.dto.StandardPartsPageDto">
+        <include refid="standardPartsSql"></include>
+        <where>
+            <if test="dto.partsName !=null and dto.partsName!=''">
+                and a.parts_name like concat('%',#{dto.partsName},'%')
+            </if>
+            <if test="dto.specifications!=null and dto.specifications!=''">
+                and a.specifications like concat('%',#{dto.specifications},'%')
+            </if>
+            <if test="dto.brand!=null and dto.brand!=''">
+                and a.brand like concat('%',#{dto.brand},'%')
+            </if>
+            <if test="dto.type!=null">
+                and a.type = #{dto.type}
+            </if>
+            and a.del_flag=0
+        </where>
+    </select>
+
+    <select id="selfSelectById" resultType="com.cbvac.entity.CbvacStandardPartsEntity">
+        <include refid="standardPartsSql"></include>
+        <where>
+            and a.id=#{id} and a.del_flag=0
+        </where>
+    </select>
+
+</mapper>

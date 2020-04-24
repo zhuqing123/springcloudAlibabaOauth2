@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cbvac.mapper.CbvacProcessMapper">
+
+    <sql id="processSql">
+                        select
+        a.id as id,
+        a.process_name as process_name,
+        a.dict_unit_id as dict_unit_id,
+        b.dict_name as dict_unit_name,
+        a.process_price as process_price,
+        a.status as status,
+        a.create_time as create_time,
+        a.modify_time as modify_time,
+        a.create_id as create_id,
+        a.modify_id as modify_id
+        from cbvac_process a
+        left join cbvac_dict b on a.dict_unit_id=b.id and b.del_flag=0
+    </sql>
+
+
+    <select id="selfSelectPageList" resultType="com.cbvac.entity.CbvacProcessEntity"
+            parameterType="com.cbvac.dto.ProcessPageDto">
+        <include refid="processSql"></include>
+        <where>
+            and a.del_flag=0
+            <if test="dto.processName !=null and dto.processName!=''">
+                and a.process_name like concat('%',#{dto.processName},'%')
+            </if>
+        </where>
+    </select>
+
+    <select id="selfSelectById" resultType="com.cbvac.entity.CbvacProcessEntity">
+        <include refid="processSql"></include>
+        <where>
+            and a.del_flag=0 and a.id=#{id}
+        </where>
+    </select>
+</mapper>

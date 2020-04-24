@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cbvac.mapper.CbvacDictMapper">
+
+    <sql id="dictSql">
+                select
+        a.id id,
+        a.create_id create_id,
+        a.dict_name dict_name,
+        a.create_time create_time,
+        a.dict_value dict_value,
+        a.status status,
+        a.sort sort,
+        a.description description,
+        a.parent_id parent_id,
+        a.parent_value parent_value,
+        b.dict_name parent_name,
+        a.modify_time modify_time,
+        a.modify_id modify_id
+        from cbvac_dict a left join cbvac_dict b on a.parent_id = b.id and b.del_flag=0
+    </sql>
+
+    <insert id="selfInset" parameterType="com.cbvac.entity.CbvacDictEntity" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_dict (dict_name,dict_value,parent_id,parent_value,description,sort) values (#{dictName},#{dictValue},#{parentId},#{parentValue},#{description},#{sort})
+    </insert>
+
+    <select id="selectUnit" resultType="com.cbvac.entity.CbvacDictEntity"
+            parameterType="com.cbvac.dto.CbvacDictPageDto">
+        <include refid="dictSql"></include>
+        <where>
+            <if test="dto.dictName!=null and dto.dictName!='' ">
+                and a.dict_name like concat('%',#{dto.dictName},'%')
+            </if>
+            <if test="dto.dictValue!=null and dto.dictValue!='' ">
+                and a.dict_value like concat('%',#{dto.dictValue},'%')
+            </if>
+            <if test="dto.parentValues!=null and dto.parentValues.size>0">
+                and a.parent_value in
+                <foreach collection="dto.parentValues" item="item" index="index" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            and a.del_flag=0
+        </where>
+    </select>
+
+    <select id="selectByParentValueIn" resultType="com.cbvac.entity.CbvacDictEntity">
+        <include refid="dictSql"></include>
+        <where>
+            <if test="parentValues!=null and parentValues.size>0">
+                and a.parent_value in
+                <foreach collection="parentValues" item="item" index="index" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            and a.del_flag=0
+        </where>
+    </select>
+
+</mapper>

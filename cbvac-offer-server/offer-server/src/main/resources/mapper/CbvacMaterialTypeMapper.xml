@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cbvac.mapper.CbvacMaterialTypeMapper">
+
+    <sql id="materialTypeSql">
+                select
+        a.id as id,
+        b.material_type as material_type,
+        b.material_name as material_name,
+        a.specifications as specifications,
+        a.dict_unit_id as dict_unit_id,
+        c.dict_name as dict_unit_name,
+        a.price as price,
+        a.status as status,
+        b.density as density,
+        a.create_time as create_time,
+        a.modify_time as modify_time,
+        a.create_id as create_id,
+        a.modify_id as modify_id
+        from cbvac_material_type a
+        left join cbvac_material_density b on a.density_id=b.id and b.del_flag=0
+        left join cbvac_dict c on a.dict_unit_id=c.id and c.del_flag=0
+    </sql>
+
+
+    <select id="findAllPage" resultType="com.cbvac.entity.CbvacMaterialTypeEntity"
+            parameterType="com.cbvac.dto.MaterialTypePageDto">
+        <include refid="materialTypeSql"></include>
+        <where>
+            <if test="dto.materialType!=null and dto.materialType!=''">
+                and b.material_type like concat('%',#{dto.materialType},'%')
+            </if>
+            <if test="dto.materialName!=null and dto.materialName!=''">
+                and b.material_name like concat('%',#{dto.materialName},'%')
+            </if>
+            <if test="dto.specifications!=null and dto.specifications!=''">
+                and a.specifications like concat('%',#{dto.specifications},'%')
+            </if>
+            and a.del_flag=0
+        </where>
+    </select>
+
+    <select id="findSelfById" resultType="com.cbvac.entity.CbvacMaterialTypeEntity" parameterType="java.lang.Long">
+        <include refid="materialTypeSql"></include>
+        <where>
+            and a.id=#{id}  and a.del_flag=0
+        </where>
+    </select>
+
+</mapper>
