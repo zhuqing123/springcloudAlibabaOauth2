@@ -34,7 +34,7 @@
         <offer-common-version>1.0-SNAPSHOT</offer-common-version>
         <druid-version>1.1.20</druid-version>
         <swagger2-version>2.9.2</swagger2-version>
-        <swagger2-ui-version>2.9.2</swagger2-ui-version>
+        <swagger2-ui-version>2.10.0</swagger2-ui-version>
         <mybatis-pulus-version>3.3.1.tmp</mybatis-pulus-version>
         <commons-lang3>3.9</commons-lang3>
         <mybatis-pulus-dynamic-version>3.0.0</mybatis-pulus-dynamic-version>
